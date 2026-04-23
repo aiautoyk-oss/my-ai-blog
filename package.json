@@ -9,16 +9,28 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "generate:article": "python .\\scripts\\generate_article.py",
+    "generate:image": "python .\\scripts\\generate_image.py",
+    "generate:affiliate": "python .\\scripts\\insert_affiliate_links.py",
+    "generate:all": "python .\\scripts\\generate_article.py && python .\\scripts\\generate_image.py && python .\\scripts\\insert_affiliate_links.py"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
+    "@google/generative-ai": "^0.24.1",
     "@tailwindcss/vite": "^4.2.4",
     "astro": "^6.1.8",
     "astro-seo": "^1.1.0",
+    "dotenv": "^17.4.2",
+    "gray-matter": "^4.0.3",
+    "rss-parser": "^3.13.0",
     "sharp": "^0.34.3",
+    "slugify": "^1.6.9",
     "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0"
   }
 }

@@ -1,0 +1,52 @@
+{
+  "ChatGPT": {
+    "url": "YOUR_CHATGPT_AFFILIATE_URL_HERE",
+    "label": "ChatGPT",
+    "category": "ai-tool"
+  },
+  "Claude": {
+    "url": "YOUR_CLAUDE_AFFILIATE_URL_HERE",
+    "label": "Claude",
+    "category": "ai-tool"
+  },
+  "Gemini": {
+    "url": "YOUR_GEMINI_AFFILIATE_URL_HERE",
+    "label": "Gemini",
+    "category": "ai-tool"
+  },
+  "Notion AI": {
+    "url": "YOUR_NOTION_AI_AFFILIATE_URL_HERE",
+    "label": "Notion AI",
+    "category": "ai-tool"
+  },
+  "Canva": {
+    "url": "YOUR_CANVA_AFFILIATE_URL_HERE",
+    "label": "Canva",
+    "category": "ai-tool"
+  },
+  "Perplexity": {
+    "url": "YOUR_PERPLEXITY_AFFILIATE_URL_HERE",
+    "label": "Perplexity",
+    "category": "ai-tool"
+  },
+  "ConoHa WING": {
+    "url": "YOUR_CONOHA_WING_AFFILIATE_URL_HERE",
+    "label": "ConoHa WING",
+    "category": "server"
+  },
+  "エックスサーバー": {
+    "url": "YOUR_XSERVER_AFFILIATE_URL_HERE",
+    "label": "エックスサーバー",
+    "category": "server"
+  },
+  "マネーフォワード クラウド": {
+    "url": "YOUR_MONEYFORWARD_AFFILIATE_URL_HERE",
+    "label": "マネーフォワード クラウド",
+    "category": "saas"
+  },
+  "Amazon Kindle": {
+    "url": "YOUR_AMAZON_KINDLE_AFFILIATE_URL_HERE",
+    "label": "Amazon Kindle",
+    "category": "amazon"
+  }
+}

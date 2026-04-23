@@ -1,0 +1,18 @@
+---
+const vcPid = import.meta.env.PUBLIC_VALUECOMMERCE_PID;
+---
+
+{
+	vcPid && (
+		<>
+			<script is:inline define:vars={{ vcPid }}>
+				var vc_pid = vcPid;
+			</script>
+			<script
+				is:inline
+				async
+				src="https://aml.valuecommerce.com/vcdal.js"
+			></script>
+		</>
+	)
+}

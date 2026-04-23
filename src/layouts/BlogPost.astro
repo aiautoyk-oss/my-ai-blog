@@ -1,86 +1,489 @@
 ---
-import { Image } from 'astro:assets';
-import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import Header from '../components/Header.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+interface Props {
+	title: string;
+	description: string;
+	pubDate: Date | string;
+	updatedDate?: Date | string;
+	heroImage?: string;
+	tags?: string[];
+}
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	heroImage,
+	tags = []
+} = Astro.props;
 ---
 
-<html lang="en">
+<!doctype html>
+<html lang="ja">
 	<head>
 		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
 	</head>
-
 	<body>
 		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
+
+		<main class="post-shell">
+			<article class="post-card">
+				{
+					heroImage && (
+						<figure class="post-hero">
+							<img
+								src={heroImage}
+								alt={title}
+								loading="eager"
+								decoding="async"
+							/>
+						</figure>
+					)
+				}
+
+				<header class="post-header">
+					<h1 class="post-title">{title}</h1>
+
+					<div class="post-meta">
+						<span class="post-meta-item">
+							公開日: <FormattedDate date={pubDate} />
+						</span>
+
+						{
+							updatedDate && (
+								<span class="post-meta-item">
+									更新日: <FormattedDate date={updatedDate} />
+								</span>
+							)
+						}
 					</div>
+
+					{
+						tags.length > 0 && (
+							<ul class="post-tags" aria-label="記事タグ">
+								{tags.map((tag) => (
+									<li class="post-tag">#{tag}</li>
+								))}
+							</ul>
+						)
+					}
+				</header>
+
+				<div class="article-content">
 					<slot />
 				</div>
 			</article>
 		</main>
+
 		<Footer />
 	</body>
 </html>
+
+<style is:global>
+	:root {
+		--post-bg: #fafafa;
+		--card-bg: #ffffff;
+		--text-main: #27272a;
+		--text-strong: #111827;
+		--text-muted: #71717a;
+		--line: #e5e7eb;
+		--line-soft: #f1f5f9;
+		--blue-bg: #eff6ff;
+		--blue-border: #60a5fa;
+		--blue-text: #1e3a8a;
+		--amber-bg: #fffbeb;
+		--amber-border: #fcd34d;
+		--amber-text: #92400e;
+		--shadow-soft: 0 8px 24px rgba(15, 23, 42, 0.06);
+	}
+
+	body {
+		background: var(--post-bg);
+		color: var(--text-main);
+	}
+
+	.post-shell {
+		width: 100%;
+		max-width: 860px;
+		margin: 0 auto;
+		padding: 24px 16px 72px;
+	}
+
+	.post-card {
+		background: var(--card-bg);
+		border-radius: 24px;
+	}
+
+	.post-hero {
+		margin: 0 0 28px;
+	}
+
+	.post-hero img {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 16 / 9;
+		object-fit: cover;
+		border-radius: 20px;
+		box-shadow: var(--shadow-soft);
+	}
+
+	.post-header {
+		margin-bottom: 32px;
+	}
+
+	.post-title {
+		margin: 0 0 16px;
+		font-size: clamp(2rem, 4vw, 3rem);
+		line-height: 1.22;
+		letter-spacing: -0.02em;
+		font-weight: 800;
+		color: var(--text-strong);
+		word-break: break-word;
+	}
+
+	.post-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px 16px;
+		margin-bottom: 16px;
+		font-size: 0.95rem;
+		line-height: 1.7;
+		color: var(--text-muted);
+	}
+
+	.post-meta-item {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+
+	.post-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.post-tag {
+		padding: 6px 12px;
+		border-radius: 999px;
+		background: #f4f4f5;
+		color: #3f3f46;
+		font-size: 0.82rem;
+		line-height: 1.4;
+		font-weight: 600;
+	}
+
+	/* =========================
+	   記事本文
+	   ========================= */
+	.article-content {
+		font-size: clamp(1rem, 0.98rem + 0.15vw, 1.08rem);
+		line-height: 1.95;
+		color: var(--text-main);
+		word-break: break-word;
+		overflow-wrap: anywhere;
+	}
+
+	.article-content > * + * {
+		margin-top: 1.2em;
+	}
+
+	.article-content p {
+		margin: 1em 0;
+		line-height: 1.95;
+	}
+
+	/* 見出し */
+	.article-content h2 {
+		margin-top: 2.5em;
+		margin-bottom: 0.8em;
+		padding-bottom: 0.42em;
+		font-size: clamp(1.45rem, 3vw, 1.9rem);
+		line-height: 1.42;
+		font-weight: 800;
+		letter-spacing: -0.01em;
+		color: var(--text-strong);
+		border-bottom: 2px solid var(--line);
+	}
+
+	.article-content h3 {
+		margin-top: 2em;
+		margin-bottom: 0.7em;
+		padding-left: 0.7em;
+		font-size: clamp(1.18rem, 2vw, 1.35rem);
+		line-height: 1.5;
+		font-weight: 750;
+		color: var(--text-strong);
+		border-left: 4px solid #cbd5e1;
+	}
+
+	.article-content h4 {
+		margin-top: 1.6em;
+		margin-bottom: 0.55em;
+		font-size: 1.05rem;
+		line-height: 1.6;
+		font-weight: 700;
+		color: var(--text-strong);
+	}
+
+	/* リスト */
+	.article-content ul,
+	.article-content ol {
+		margin: 1em 0 1.25em 0.2em;
+		padding-left: 1.4em;
+	}
+
+	.article-content li {
+		margin: 0.55em 0;
+		line-height: 1.85;
+	}
+
+	.article-content li > p {
+		margin: 0.4em 0;
+	}
+
+	/* 強調 */
+	.article-content strong {
+		font-weight: 750;
+		color: var(--text-strong);
+	}
+
+	/* リンク */
+	.article-content a {
+		color: #2563eb;
+		text-decoration: underline;
+		text-underline-offset: 0.18em;
+		font-weight: 600;
+		transition: color 0.15s ease;
+	}
+
+	.article-content a:hover {
+		color: #1d4ed8;
+	}
+
+	.article-content a.affiliate-link {
+		text-decoration-thickness: 2px;
+	}
+
+	/* NOTE / PR ブロック */
+	.article-content .pr-note,
+	.article-content .note-block,
+	.article-content .info-block {
+		margin: 1.25rem 0 1.6rem;
+		padding: 1rem 1rem;
+		border: 1px solid var(--amber-border);
+		background: var(--amber-bg);
+		border-radius: 14px;
+		font-size: 0.95rem;
+		line-height: 1.8;
+		color: var(--amber-text);
+	}
+
+	.article-content .pr-note strong,
+	.article-content .note-block strong,
+	.article-content .info-block strong {
+		color: #78350f;
+	}
+
+	/* 通常の blockquote */
+	.article-content blockquote {
+		margin: 1.4em 0;
+		padding: 1rem 1.1rem;
+		border-left: 4px solid var(--blue-border);
+		background: var(--blue-bg);
+		border-radius: 12px;
+		color: var(--blue-text);
+	}
+
+	.article-content blockquote p {
+		margin: 0.4em 0;
+	}
+
+	/* 表 */
+	.article-content table {
+		display: block;
+		width: 100%;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		border-collapse: collapse;
+		margin: 1.5em 0;
+		font-size: 0.95rem;
+		line-height: 1.7;
+		white-space: nowrap;
+		border: 1px solid var(--line);
+		border-radius: 12px;
+		background: white;
+	}
+
+	.article-content thead,
+	.article-content tbody,
+	.article-content tr {
+		width: max-content;
+		min-width: 100%;
+	}
+
+	.article-content th,
+	.article-content td {
+		border: 1px solid var(--line);
+		padding: 0.75rem 0.9rem;
+		text-align: left;
+		vertical-align: top;
+	}
+
+	.article-content th {
+		background: #f8fafc;
+		font-weight: 700;
+		color: var(--text-strong);
+	}
+
+	/* 画像 */
+	.article-content img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+		margin: 1.5em auto;
+		border-radius: 14px;
+		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+	}
+
+	/* コード */
+	.article-content pre {
+		margin: 1.4em 0;
+		padding: 1rem 1.1rem;
+		border-radius: 14px;
+		background: #18181b;
+		color: #f4f4f5;
+		overflow-x: auto;
+		font-size: 0.92rem;
+		line-height: 1.7;
+	}
+
+	.article-content code {
+		padding: 0.15em 0.35em;
+		border-radius: 0.35rem;
+		background: #f4f4f5;
+		font-size: 0.92em;
+	}
+
+	.article-content pre code {
+		padding: 0;
+		background: transparent;
+	}
+
+	/* 区切り線 */
+	.article-content hr {
+		margin: 2em 0;
+		border: none;
+		border-top: 1px solid var(--line);
+	}
+
+	/* =========================
+	   スマホ最適化
+	   ========================= */
+	@media (max-width: 768px) {
+		.post-shell {
+			padding: 20px 14px 64px;
+		}
+
+		.post-hero {
+			margin-bottom: 22px;
+		}
+
+		.post-hero img {
+			border-radius: 16px;
+		}
+
+		.post-header {
+			margin-bottom: 26px;
+		}
+
+		.post-title {
+			font-size: clamp(1.85rem, 7vw, 2.25rem);
+			line-height: 1.28;
+			margin-bottom: 14px;
+		}
+
+		.post-meta {
+			font-size: 0.9rem;
+			gap: 8px 12px;
+			margin-bottom: 14px;
+		}
+
+		.post-tag {
+			font-size: 0.78rem;
+			padding: 5px 10px;
+		}
+
+		.article-content {
+			font-size: 0.99rem;
+			line-height: 1.9;
+		}
+
+		.article-content > * + * {
+			margin-top: 1.1em;
+		}
+
+		.article-content h2 {
+			margin-top: 2.2em;
+			margin-bottom: 0.75em;
+			font-size: 1.38rem;
+			line-height: 1.45;
+		}
+
+		.article-content h3 {
+			margin-top: 1.8em;
+			margin-bottom: 0.65em;
+			font-size: 1.14rem;
+			line-height: 1.5;
+			padding-left: 0.6em;
+		}
+
+		.article-content h4 {
+			font-size: 1rem;
+		}
+
+		.article-content ul,
+		.article-content ol {
+			padding-left: 1.25em;
+			margin-left: 0.1em;
+		}
+
+		.article-content li {
+			margin: 0.5em 0;
+		}
+
+		.article-content .pr-note,
+		.article-content .note-block,
+		.article-content .info-block,
+		.article-content blockquote {
+			padding: 0.9rem 0.95rem;
+			border-radius: 12px;
+			font-size: 0.92rem;
+			line-height: 1.75;
+		}
+
+		.article-content table {
+			font-size: 0.9rem;
+		}
+
+		.article-content th,
+		.article-content td {
+			padding: 0.65rem 0.75rem;
+		}
+
+		.article-content pre {
+			padding: 0.9rem 0.95rem;
+			font-size: 0.88rem;
+			border-radius: 12px;
+		}
+	}
+</style>
