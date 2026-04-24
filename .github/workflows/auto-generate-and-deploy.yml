@@ -25,7 +25,7 @@ jobs:
     timeout-minutes: 60
 
     env:
-      NODE_VERSION: '20'
+      NODE_VERSION: '22'
       PYTHON_VERSION: '3.13'
       PYTHONUTF8: '1'
       TZ: 'Asia/Tokyo'
