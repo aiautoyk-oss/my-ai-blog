@@ -96,4 +96,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          command: pages deploy dist --project-name=${{ secrets.CLOUDFLARE_PAGES_PROJECT_NAME }}
+          command: >
+           pages deploy dist 
+           --project-name=${{ secrets.CLOUDFLARE_PAGES_PROJECT_NAME }}
+           --commit-dirty=true
