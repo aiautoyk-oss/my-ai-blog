@@ -10,10 +10,10 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "generate:article": "python .\\scripts\\generate_article.py",
-    "generate:image": "python .\\scripts\\generate_image.py",
-    "generate:affiliate": "python .\\scripts\\insert_affiliate_links.py",
-    "generate:all": "python .\\scripts\\generate_article.py && python .\\scripts\\generate_image.py && python .\\scripts\\insert_affiliate_links.py"
+    "generate:article": "python .//scripts//generate_article.py",
+    "generate:image": "python .//scripts//generate_image.py",
+    "generate:affiliate": "python .//scripts//insert_affiliate_links.py",
+     "generate:all": "python ./scripts/generate_article.py && python ./scripts/generate_image.py && python ./scripts/insert_affiliate_links.py"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",
